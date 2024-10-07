@@ -1,0 +1,13 @@
+module calc_enc(
+    input btnl,
+    input btnc,
+    input btnr,
+    output reg [2:0] alu_op
+);
+  
+  always @(*) begin
+          
+    alu_op[0] = (!btnc & btnr) | (btnr & btnl);
+    alu_op[1] = (!btnc & btnr) | (!btnr & btnl);
+    alu_op[2] = (btnc & btnr) | (!btnr & (!btnc & btnl));
+    alu_op[3] = (((btnl & !btnc) & btnr) | ((btnl & btnc) & !btnr));
