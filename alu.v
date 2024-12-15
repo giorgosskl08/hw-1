@@ -27,9 +27,7 @@ module alu(
       ALUOP_SLL: result = op1 << op2[4:0];  
       ALUOP_SRA: result = $unsigned($signed(op1) >>> op2[4:0]);  
       ALUOP_XOR: result = op1 ^ op2; 
-      default: result = 0;
     endcase
-    zero = (result == 32'b0);
   end
 
 endmodule

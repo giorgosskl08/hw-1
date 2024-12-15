@@ -12,9 +12,9 @@ module regfile #(
 );
 
     reg [DATAWIDTH-1:0] registers [31:0];
+    integer i;
 
     initial begin
-        integer i;
         for (i = 0; i < 32; i = i + 1) begin
             registers[i] = 0;
         end
@@ -31,10 +31,10 @@ module regfile #(
         readData2 = registers[readReg2];
 
         if (write && (writeReg == readReg1)) begin
-            readData1 = writeData;
+            readData1 <= writeData;
         end
         if (write && (writeReg == readReg2)) begin
-            readData2 = writeData; 
+            readData2 <= writeData; 
         end
     end
 
