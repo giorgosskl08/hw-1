@@ -36,7 +36,7 @@ module procedures #(
   
   reg [3:0] ALUCtrl = 4'b0000;
   
-  datapath datapath(
+  datapath #(.INITIAL_PC(INITIAL_PC)) datapath(
     .clk(clk), 
     .rst(rst), 
     .instr(instr), 

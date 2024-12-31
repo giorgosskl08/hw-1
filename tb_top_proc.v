@@ -1,10 +1,8 @@
 `timescale 1ns / 1ps
 `include "ram.v"
 `include "rom.v"
-`include "adpcm_seq_item.svh"
 
 module riscv_core_testbench;
-
 
 // Clock and reset signals
 reg clk = 0; 
@@ -21,6 +19,9 @@ reg [8:0] ProgramAdress = 0;
 
 
 // Instantiate the RISC-V core
+DATA_MEMORY ram(.we(MemWrite),.dout(dReadData),.din(dWriteData),.addr(dAddress[8:0]),.clk(clk));  
+  
+  
 procedures core(
     .clk(clk),
     .rst(rst),
@@ -36,7 +37,7 @@ procedures core(
 
 INSTRUCTION_MEMORY rom(
     .clk(clk),
-    .addr(PC),
+    .addr(PC[8:0]),
     .dout(instr)
 );
 

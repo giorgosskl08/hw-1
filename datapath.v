@@ -22,22 +22,22 @@ module datapath #(
     output reg [31:0] WriteBackData
 );
 
-localparam [6:0] IMMEDIATE = 7'b0010011;
-localparam [6:0] NON_IMMEDIATE = 7'b0110011;
-localparam [6:0] LW = 7'b0000011;
-localparam [6:0] SW = 7'b0100011;
-localparam [6:0] BEQ = 7'b1100011;
+  localparam [6:0] IMMEDIATE = 7'b0010011;
+  localparam [6:0] NON_IMMEDIATE = 7'b0110011;
+  localparam [6:0] LW = 7'b0000011;
+  localparam [6:0] SW = 7'b0100011;
+  localparam [6:0] BEQ = 7'b1100011;
   
   reg [31:0] PC_inter = INITIAL_PC; 
   reg [31:0] op2;
   wire [31:0] result_inter;
-  reg [11:0] immediate;
   
+  //Immediate Generation
+  reg [11:0] immediate;
   wire [31:0] sign_extended = {{20{instr[31]}}, instr[31:20]};
   wire [31:0] immediate_I = sign_extended;  
   wire [31:0] immediate_S = {{20{instr[31]}}, instr[31:25], instr[11:7]};  
   wire [31:0] immediate_B = {{19{instr[31]}}, instr[31], instr[7], instr[30:25], instr[11:8], 1'b0};  
-  
   wire [31:0] complete_sign_extended_immediate = {sign_extended[31:12], immediate[11:0]};
   
   assign PC = PC_inter;
@@ -49,7 +49,7 @@ localparam [6:0] BEQ = 7'b1100011;
     .readReg1(instr[19:15]), 
     .readReg2(instr[24:20]), 
     .writeReg(instr[11:7]), 
-    .writeData(result_inter), 
+    .writeData(WriteBackData), 
     .readData1(readData1), 
     .readData2(readData2)
 );
@@ -71,12 +71,13 @@ localparam [6:0] BEQ = 7'b1100011;
         immediate =  immediate_I;
 end
   
+  //Programm Counter
   always @(posedge clk or posedge rst) begin
       if (rst) begin
             PC_inter <= INITIAL_PC; 
       end
       else if (loadPC) begin
-          if (PCSrc)
+        if (PCSrc)
               PC_inter <= PC_inter + immediate;
     	else
               PC_inter <= PC_inter + 4;
@@ -84,17 +85,17 @@ end
   end
                              
   always @(*) begin
+    //ALU
     if ( ALUSrc == 1 ) begin
-          op2 = complete_sign_extended_immediate;
+      op2 = complete_sign_extended_immediate;
     end
       else if ( ALUSrc == 0 ) begin
           op2 = readData2;
       end
-  end 
-      
-      
-  always @(*) begin
+
     dWriteData = readData2;
+    dAddress = result_inter;
+    
     if ( MemToReg == 1 ) begin  
       WriteBackData = dReadData;
     end
