@@ -1,4 +1,6 @@
 `include "datapath.v"
+`include "ram.v"
+`include "rom.v"
 
 module procedures #(
   parameter [31:0] INITIAL_PC = 32'h00400000
@@ -180,9 +182,6 @@ end
       RegWrite = 0;
     else
       RegWrite = 1;
-  end
-  
-  always @(*) begin
     if (opcode == LW)
       MemToReg = 1;
     else
