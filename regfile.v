@@ -20,17 +20,15 @@ module regfile #(
         end
     end
 
-    always @(posedge clk) begin
+  always @(posedge clk) begin
         if (write) begin
             registers[writeReg] <= writeData;
         end
-    end
-
-    always @(*) begin
-        readData1 = registers[readReg1];
-        readData2 = registers[readReg2];
-
-        if (write && (writeReg == readReg1)) begin
+      
+        readData1 <= registers[readReg1];
+        readData2 <= registers[readReg2];
+    
+     	if (write && (writeReg == readReg1)) begin
             readData1 <= writeData;
         end
         if (write && (writeReg == readReg2)) begin

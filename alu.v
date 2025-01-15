@@ -5,7 +5,7 @@ module alu(
   output reg zero,
   output reg [31:0] result
 );
-
+  
   parameter [3:0] ALUOP_AND = 4'b0000;
   parameter [3:0] ALUOP_OR  = 4'b0001;
   parameter [3:0] ALUOP_ADD = 4'b0010;
@@ -26,8 +26,10 @@ module alu(
       ALUOP_SRL: result = op1 >> op2[4:0];  
       ALUOP_SLL: result = op1 << op2[4:0];  
       ALUOP_SRA: result = $unsigned($signed(op1) >>> op2[4:0]);  
-      ALUOP_XOR: result = op1 ^ op2; 
+      ALUOP_XOR: result = op1 ^ op2;
+      default : result = 32'b0;
     endcase
+    zero = (result == 32'b0) ? 1 : 0;
   end
 
 endmodule
