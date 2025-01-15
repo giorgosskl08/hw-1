@@ -51,7 +51,7 @@ initial begin
     $dumpfile("final.vcd");
     $dumpvars(0, riscv_core_testbench);  
     rst = 1;
-    rst = 0;
+    #15 rst = 0;
     #1000;
     $finish;
 end

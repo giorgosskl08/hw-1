@@ -74,7 +74,7 @@ module datapath #(
     end
   end
 
-  always @(posedge clk or posedge rst) begin
+  always @(posedge clk) begin
     if (rst) begin
       PC_inter <= INITIAL_PC; 
     end 
