@@ -1,6 +1,6 @@
+`timescale 1ns / 1ps
 `include "ram.v"
 `include "rom.v"
-`timescale 1ns / 1ps
 
 module riscv_core_testbench;
 
@@ -15,6 +15,8 @@ wire MemRead;
 wire MemWrite;
 wire [31:0] dReadData; 
 wire [31:0] WriteBackData;
+reg [8:0] ProgramAdress = 0;
+
 
 // Instantiate the RISC-V core
 DATA_MEMORY ram(.we(MemWrite),.dout(dReadData),.din(dWriteData),.addr(dAddress[8:0]),.clk(clk));  
@@ -40,16 +42,18 @@ INSTRUCTION_MEMORY rom(
 );
 
 always begin
-  clk = 0;  
-  #5 clk <= ~clk; 
+  	clk = 0;
+    #5; 
+    clk <= ~clk; 
 end
 
 initial begin
     $dumpfile("final.vcd");
     $dumpvars(0, riscv_core_testbench);  
+    rst = 1;
     rst = 0;
-    #15 rst = 1;
-    #1000 $finish;
+    #1000;
+    $finish;
 end
 
 endmodule
