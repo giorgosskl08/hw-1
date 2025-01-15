@@ -59,10 +59,10 @@ module datapath #(
     .zero(Zero),
     .result(result_inter)
   );
+  
+  assign PC = PC_inter;
 
   always @(*) begin
-    immediate = 32'b0;
-
     if (instr[6:0] == SW) begin
       immediate = immediate_S;
     end 
@@ -91,20 +91,14 @@ module datapath #(
       op2 = immediate;
     else
       op2 = readData2;
-  end
 
-  always @(*) begin
     dWriteData = readData2;
     dAddress   = result_inter;
-  end
 
-  always @(*) begin
     if (MemToReg) 
       WriteBackData = dReadData;
     else 
       WriteBackData = result_inter;
   end
-
-  assign PC = PC_inter;
 
 endmodule
