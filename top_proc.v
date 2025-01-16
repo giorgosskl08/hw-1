@@ -104,6 +104,11 @@ module procedures #(
           IF: begin
             {IFStage, IDStage, MEMStage, EXStage, WBStage} = 5'b10000;
             loadPC <= 0;
+            // Reset the control signals
+            MemRead <= 0;
+            MemWrite <= 0;
+            RegWrite <= 0;
+            MemToReg <= 0;
           end
           ID: {IFStage, IDStage, MEMStage, EXStage, WBStage} = 5'b01000;
           MEM: begin
